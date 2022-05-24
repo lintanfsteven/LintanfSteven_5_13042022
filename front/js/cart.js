@@ -1,5 +1,6 @@
 // gathering localStorage
 let purchaseStorage = JSON.parse(localStorage.getItem('product'));
+let article = '';
 
 // fetch to get api's prices
 fetch('http://localhost:3000/api/products')
@@ -17,8 +18,6 @@ fetch('http://localhost:3000/api/products')
         totalItems();
         modifyQuantity();
         deleteItem();
-        getForm();
-        orderForm();
     })
     .catch((error) => console.error(error));
 

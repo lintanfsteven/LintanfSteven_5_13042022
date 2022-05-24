@@ -46,74 +46,71 @@ function onClick(data) {
     const button = document.querySelector('#addToCart');
     button.addEventListener('click', ($event) => {
         // gathering quantities/colors
-        let selectColor = colorSelect.value;
-        let selectQuantity = quantitySelect.value;
+        let selectColor = document.getElementById('colors').value;
+        let selectQuantity = document.getElementById('quantity').value;
 
-        if (
-            selectQuantity == 0 || selectQuantity > 100 || selectColor == null || selectColor == ''
-            ) {
-                alert(
+        if (selectQuantity == 0 || selectQuantity > 100 || selectColor == null || selectColor == '') {
+            alert(
                 //error if the user doesn't select color/quantity
                 'Veuillez renseigner une quantité comprise entre 1 et 100 et une couleur'
-                );
-                return;
-            } else {
-                // gathering article infos to add
-                let info = {
-                    idProduct: id,
-                    color: selectColor,
-                    quantity: Number(selectQuantity),
-                    nom: data.name,
-                    description: data.description,
-                    imageUrl: data.imageUrl,
-                    imgAlt: data.altTxt,
-                };
+            );
+            return;
+        } else {
+            // gathering article infos to add
+            let info = {
+                idProduct: id,
+                color: selectColor,
+                quantity: Number(selectQuantity),
+                nom: data.name,
+                price: data.price,
+                description: data.description,
+                imageUrl: data.imageUrl,
+                imgAlt: data.altTxt,
+            };
 
-                // localStorage init
-                let purchaseStorage = JSON.parse(localStorage.getItem('product'));
+            // localStorage init
+            let purchaseStorage = JSON.parse(localStorage.getItem('product'));
 
-                // warning when user add article into the cart
+            // warning when user add article into the cart
 
-                const alertConfirmation = () => {
-                    if (
-                        window.confirm(
-                            `${selectQuantity} ${data.name} de couleur ${selectColor} a bien été ajouté à votre panier. Pour le consulter, appuyer sur ok`)
-                        ) {
-                            // sending user on cart page
-                            window.location.href = 'cart.html';
-                        } else {
-                            // or reload the page
-                            location.reload(); 
-                        }
-                    };
-
-                    if (purchaseStorage) {
-                        // if there is a product with same id/color
-                        const foundStorage = purchaseStorage.find(
-                            (p) => p.idProduct === id && p.color === selectColor
-                        );
-                        if (foundStorage) {
-                            let totalQuantity = 
-                            parseInt(info.quantity) + parseInt(foundStorage.quantity);
-                            foundStorage.quantity = totalQuantity;
-                            localStorage.setItem('product', JSON.stringify(purchaseStorage));
-                            alertConfirmation();
-                        } else {
-                            // or product is != from previous ordered
-                            purchaseStorage.push(info);
-                            localStorage.setItem('product', JSON.stringify(purchaseStorage));
-                            alertConfirmation();
-                        }
-                    } else {
-                        // if nothing is in the cart
-                        purchaseStorage = [];
-                        // pushing localStorage's info in the array
-                        purchaseStorage.push(info);
-                        localStorage.setItem('product', JSON.stringify(purchaseStorage));
-                        alertConfirmation();
-                    }
+            const alertConfirmation = () => {
+                if (
+                    window.confirm(
+                        `${selectQuantity} ${data.name} de couleur ${selectColor} a bien été ajouté à votre panier. Pour le consulter, appuyer sur ok`)
+                ) {
+                    // sending user on cart page
+                    window.location.href = 'cart.html';
+                } else {
+                    // or reload the page
+                    location.reload();
                 }
+            };
+
+            if (purchaseStorage) {
+                // if there is a product with same id/color
+                const foundStorage = purchaseStorage.find(
+                    (p) => p.idProduct === id && p.color === selectColor
+                );
+                if (foundStorage) {
+                    let totalQuantity =
+                        parseInt(info.quantity) + parseInt(foundStorage.quantity);
+                    foundStorage.quantity = totalQuantity;
+                    localStorage.setItem('product', JSON.stringify(purchaseStorage));
+                    alertConfirmation();
+                } else {
+                    // or product is != from previous ordered
+                    purchaseStorage.push(info);
+                    localStorage.setItem('product', JSON.stringify(purchaseStorage));
+                    alertConfirmation();
+                }
+            } else {
+                // if nothing is in the cart
+                purchaseStorage = [];
+                // pushing localStorage's info in the array
+                purchaseStorage.push(info);
+                localStorage.setItem('product', JSON.stringify(purchaseStorage));
+                alertConfirmation();
             }
-        )
-    });
-}
+        }
+    })
+};
