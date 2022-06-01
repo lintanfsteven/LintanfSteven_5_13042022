@@ -224,7 +224,7 @@ function userForm() {
   });
 
   // city validation
-  let city = document.getElementById('address');
+  let city = document.getElementById('city');
   city.addEventListener('input', function () {
     if (nounRegex.test(city.value) === false) {
       document.getElementById('cityErrorMsg').textContent = 'Format de la ville incorrecte';
@@ -234,7 +234,7 @@ function userForm() {
   });
 
   // email validation
-  let email = document.getElementById('address');
+  let email = document.getElementById('email');
   email.addEventListener('input', function () {
     if (emailRegex.test(email.value) === false) {
       document.getElementById('emailErrorMsg').textContent = 'Format de l\'email incorrecte';
